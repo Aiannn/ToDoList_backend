@@ -2,12 +2,19 @@ class Api::V1::UsersController < ApplicationController
     # skip_before_action :authorized, only: [:create, :index] 
 
     def profile
-        render json: {user: current_user }, status: :accepted
+        user_hash = {user: current_user}
+        render json: user_hash, include: [:tasks, :quotes], status: :accepted
     end
 
     def index #no need for this, it's just for my testing purposes.
         @users = User.all 
-        render json: @users
+        render json: @users, include: [:tasks, :quotes]
+    end
+
+    def update
+        @user = User.find_by(username: params[:username])
+        @user.update(avatar: params[:avatar], bio: params[:bio])
+        render json: @user 
     end
 
     def create 
