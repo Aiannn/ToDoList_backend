@@ -13,8 +13,17 @@ class Api::V1::UsersController < ApplicationController
 
     def update
         @user = User.find_by(username: params[:username])
-        @user.update(avatar: params[:avatar], bio: params[:bio])
-        render json: @user 
+        
+        if params[:avatar]!='' && params[:bio]!=''
+            @user.update(avatar: params[:avatar], bio: params[:bio])
+        elsif params[:avatar]!=''
+            @user.update(avatar: params[:avatar])
+        elsif params[:bio]!=''
+            @user.update(bio: params[:bio])
+        else 
+            nil
+        end 
+        render json: @user, include: [:tasks, :quotes]
     end
 
     def create 
