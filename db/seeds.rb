@@ -6,7 +6,11 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-task1 = Task.create(text: 'Buy rice', category: 'Food') 
+Task.destroy_all
+User.destroy_all
+user1 = User.create(username: 'Aian', password: 'Aian')
+
+task1 = Task.create(text: 'Buy rice', category: 'Food', user_id: user1.id) 
 task2 = Task.create(text: 'Save a tenner', category: 'Money') 
 task3 = Task.create(text: 'Build a todo app', category: 'Code') 
 task4 = Task.create(text: 'Build todo API', category: 'Code') 

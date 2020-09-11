@@ -7,9 +7,10 @@ class Api::V1::AuthController < ApplicationController
         if @user && @user.authenticate(user_login_params[:password])
             #encode token comes from ApplicationController
             token = encode_token({user_id: @user.id})
-            render json: {user: @user, jwt: token}, status: :accepted
+            render json: {user: @user, quotes: @user.quotes, jwt: token}, status: :accepted
+            # render json: {user: @user, jwt: token}, status: :accepted #HOW TO DO INCLUDE: [:quotes] HERE??? Thats why I added getQuotes() in App.js
         else
-            render json: {message: 'Invalid username or password'}, status: :unauthorized
+            render json: {message: 'Invalid username or password'}, status: :unauthorized 
         end 
     end
 
