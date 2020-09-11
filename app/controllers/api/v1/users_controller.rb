@@ -27,13 +27,17 @@ class Api::V1::UsersController < ApplicationController
     end
 
     def create 
-        @user = User.create(username: params[:user][:username], password: params[:user][:password])
-        if @user.valid?
-            @token = encode_token({user_id: @user.id})
-            render json: {user: @user, jwt: @token}, status: :created
+        if User.find_by(username: params[:user][:username]) == nil 
+            @user = User.create(username: params[:user][:username], password: params[:user][:password])
+            if @user.valid?
+                @token = encode_token({user_id: @user.id})
+                render json: {user: @user, jwt: @token}, status: :created
+            else 
+                render json: {error: 'failed to create user'}, status: :not_acceptable
+            end 
         else 
-            render json: {error: 'failed to create user'}, status: :not_acceptable
-        end 
+            render json: {error: 'User already exists'}
+        end
     end 
 
 end
